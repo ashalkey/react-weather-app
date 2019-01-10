@@ -3,6 +3,7 @@ import Titles from "./components/Titles";
 import Form from "./components/Form";
 import Weather from "./components/Weather";
 import axios from "axios";
+import './App.css';
 
 const API_KEY = "2e1c5a3fbaca4a3d9d14564ae28c29da";
 
@@ -56,16 +57,24 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Titles />
-        <Form getWeather={this.getWeather} />
-        <Weather
-          temperature={this.state.temperature}
-          city={this.state.city}
-          country={this.state.country}
-          humidity={this.state.humidity}
-          description={this.state.description}
-          error={this.state.error}
-        />
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6">
+              <Titles />
+            </div>
+            <div className="col-md-6">
+              <Form getWeather={this.getWeather} />
+              <Weather
+                temperature={this.state.temperature}
+                city={this.state.city}
+                country={this.state.country}
+                humidity={this.state.humidity}
+                description={this.state.description}
+                error={this.state.error}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

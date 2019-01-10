@@ -1,9 +1,10 @@
 import React from "react";
+import './titles.css'
 
 const Titles = () => (
     <div>
-        <h1>Weather Finder</h1>
-        <p>Find out temperature, conditions, and more...</p>
+        <img className="img-fluid rounded" src={require("../images/scenic_background.jpg")} alt="scenic background" />
+
     </div>
 );
 
