@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Titles from "./components/Titles";
 import Form from "./components/Form";
 import Weather from "./components/Weather";
@@ -18,41 +18,47 @@ class App extends Component {
   }
 
   convertKelvinToFarenheit = (k) => {
-    return Number.parseFloat((k - 273.15) * (9/5) + 32).toFixed(2);
+    return Number.parseFloat((k - 273.15) * (9 / 5) + 32).toFixed(2);
   }
 
   getWeather = (e) => {
     e.preventDefault();
-    let city = e.target.elements.city.value;
-    let country = e.target.elements.country.value;
-    axios.get(`https://api.openweathermap.org/data/2.5/forecast`, {
-      params: {
-        q: `${city},${country}`,
-        APPID: API_KEY
-      }
-    })
-    .then((response) => {
-      console.log(response);
+    const city = e.target.elements.city.value;
+    const country = e.target.elements.country.value;
+    if (city && country) {
+      axios.get(`https://api.openweathermap.org/data/2.5/forecast`, {
+        params: {
+          q: `${city},${country}`,
+          APPID: API_KEY
+        }
+      })
+        .then((response) => {
+          this.setState({
+            temperature: `${this.convertKelvinToFarenheit(response.data.list[0].main.temp)} °F`,
+            city: response.data.city.name,
+            country: response.data.city.country,
+            humidity: response.data.list[0].main.humidity,
+            description: response.data.list[0].weather[0].description,
+            error: undefined
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+    else {
       this.setState({
-        temperature: `${this.convertKelvinToFarenheit(response.data.list[0].main.temp)} °F`,
-        city: response.data.city.name,
-        country: response.data.city.country,
-        humidity: response.data.list[0].main.humidity,
-        description: response.data.list[0].weather[0].description,
-        error: ""
+        error: "Please enter a city AND country."
       });
-    })
-    .catch(function(error){
-      console.log(error);
-    });
+    }
   };
 
   render() {
     return (
       <div>
         <Titles />
-        <Form getWeather={this.getWeather}/>
-        <Weather 
+        <Form getWeather={this.getWeather} />
+        <Weather
           temperature={this.state.temperature}
           city={this.state.city}
           country={this.state.country}
@@ -62,7 +68,7 @@ class App extends Component {
         />
       </div>
     );
-  }  
+  }
 };
 
 export default App;
